@@ -53,17 +53,15 @@ public class Dictionary {
         wordMap = new HashMap<>();
         while(m.find()){
             temp = m.group().toLowerCase();
-            if(wordMap.containsKey(temp)){
-                wordMap.put(temp, wordMap.get(temp) + 1);
-                add(temp);
-            }
-            else{
-                wordMap.put(temp, 1);
-                add(temp);
-            }
-        }
-        for(Map.Entry<String, Integer> entry : wordMap.entrySet()) {
-                System.out.print(entry.getKey()+", ");
+//            if(wordMap.containsKey(temp)){
+//                wordMap.put(temp, wordMap.get(temp) + 1);
+//                add(temp);
+//            }
+//            else{
+//                wordMap.put(temp, 1);
+//                add(temp);
+//            }
+            add(temp);
         }
     }
 
