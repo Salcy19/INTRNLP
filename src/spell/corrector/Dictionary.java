@@ -49,14 +49,18 @@ public class Dictionary {
         Pattern p = Pattern.compile("\\b[a-zA-Z0-9\\-\\'\\*]+\\b|[\\.\\?\\!]");   
         Matcher m = p.matcher(input);
         System.out.print("[");
-        ArrayList<String> wordArray = new ArrayList<>();
         HashMap<String, Integer> wordMap;
         wordMap = new HashMap<>();
-        int vocab = 0;
         while(m.find()){
             temp = m.group().toLowerCase();
-            add(temp);
-            System.out.println("temp = " + temp);
+            if(wordMap.containsKey(temp)){
+                wordMap.put(temp, wordMap.get(temp) + 1);
+                add(temp);
+            }
+            else{
+                wordMap.put(temp, 1);
+                add(temp);
+            }
         }
         for(Map.Entry<String, Integer> entry : wordMap.entrySet()) {
                 System.out.print(entry.getKey()+", ");
