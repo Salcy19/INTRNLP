@@ -108,10 +108,10 @@ public class SpellCheck {
         ArrayList<String> toReturn = new ArrayList<>();
 
         for (int i = 0; i < input.length() - 1; i++) {
-            String working = input.substring(0, i);// System.out.println("    0:" + working);
-            working = working + input.charAt(i + 1);  //System.out.println("    1:" + working);
-            working = working + input.charAt(i); //System.out.println("    2:" + working);
-            working = working.concat(input.substring((i + 2)));//System.out.println("    FIN:" + working); 
+            String working = input.substring(0, i);
+            working = working + input.charAt(i + 1);
+            working = working + input.charAt(i);
+            working = working.concat(input.substring((i + 2))); 
             if (dict.contains(working)) {
                 toReturn.add(working);
             }

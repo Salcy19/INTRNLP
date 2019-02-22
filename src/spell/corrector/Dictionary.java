@@ -17,18 +17,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Dictionary {
-    private int M = 1319; //prime number
-    public Dictionary() {
-        this.M = M;
-
-
-    }
-
-    private int hash(String key) {
-        return (key.hashCode() & 0x7fffffff) % M;
-    }
  
-    public boolean contains(String input) {
+    public boolean contains(String input) {//check if word is in corpus
           return wordMap.containsKey(input);
     }
     
@@ -59,7 +49,7 @@ public class Dictionary {
         }
     }
 
-    public void build(String filePath) {
+    public void build(String filePath) { //starts the tokenizing
         String input = "";
         File dir = new File(filePath);
         for(File file : dir.listFiles()) {
