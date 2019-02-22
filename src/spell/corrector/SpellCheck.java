@@ -10,6 +10,7 @@ package spell.corrector;
  * @author Antoine Salcedo
  */
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class SpellCheck {
@@ -17,7 +18,6 @@ public class SpellCheck {
     private Dictionary dict;
     final static String filePath = "src/spell/corrector/SOURCES";
     final static char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-
     SpellCheck() {
         dict = new Dictionary();
         dict.build(filePath);
@@ -53,8 +53,10 @@ public class SpellCheck {
         sb.append("perhaps you meant:\n");
         for (String s : print) {
             sb.append("\n  -" + s);
+            dict.printSuggestion(s);
         }
         return sb.toString();
+        
     }
 
     private ArrayList<String> makeSuggestions(String input) {

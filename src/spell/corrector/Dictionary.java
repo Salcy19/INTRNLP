@@ -15,53 +15,47 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import spell.corrector.Dictionary.Bucket.Node;
 
 public class Dictionary {
     private int M = 1319; //prime number
-    final private Bucket[] array;
     public Dictionary() {
         this.M = M;
 
-        array = new Bucket[M];
-        for (int i = 0; i < M; i++) {
-            array[i] = new Bucket();
-        }
+
     }
 
     private int hash(String key) {
         return (key.hashCode() & 0x7fffffff) % M;
     }
-
-    //call hash() to decide which bucket to put it in, do it.
-    public void add(String key) {
-        array[hash(key)].put(key);
-    }
-
-    //call hash() to find what bucket it's in, get it from that bucket. 
+ 
     public boolean contains(String input) {
-        input = input.toLowerCase();
-        return array[hash(input)].get(input);
+          return wordMap.containsKey(input);
     }
-   public  void tokenize(String input){
+    
+    HashMap<String, Integer> wordMap;
+            
+    public  void tokenize(String input){
         String temp;
-
+        wordMap = new HashMap<>();
         Pattern p = Pattern.compile("\\b[a-zA-Z0-9\\-\\'\\*]+\\b|[\\.\\?\\!]");   
         Matcher m = p.matcher(input);
-        System.out.print("[");
-        HashMap<String, Integer> wordMap;
-        wordMap = new HashMap<>();
         while(m.find()){
             temp = m.group().toLowerCase();
-//            if(wordMap.containsKey(temp)){
-//                wordMap.put(temp, wordMap.get(temp) + 1);
-//                add(temp);
-//            }
-//            else{
-//                wordMap.put(temp, 1);
-//                add(temp);
-//            }
-            add(temp);
+            if(wordMap.containsKey(temp)){
+                wordMap.put(temp, wordMap.get(temp) + 1);
+            }
+            else{
+                wordMap.put(temp, 1);
+            }
+        }
+    }
+    
+    public void printSuggestion(String input){
+        for(Map.Entry<String, Integer> entry : wordMap.entrySet()) {
+            if(entry.getKey()==input){
+            double percentage = entry.getValue()/wordMap.size();
+            System.out.println(entry.getKey()+" : "+percentage);
+            }
         }
     }
 
@@ -79,58 +73,5 @@ public class Dictionary {
          }
          tokenize(input);
 
-    }
-    //this method is used in my unit tests
-    public String[] getRandomEntries(int num){
-        String[] toRet = new String[num];
-        for (int i = 0; i < num; i++){
-            //pick a random bucket, go out a random number 
-            Node n = array[(int)Math.random()*M].first;
-            int rand = (int)Math.random()*(int)Math.sqrt(num);
-
-            for(int j = 0; j<rand && n.next!= null; j++) n = n.next;
-            toRet[i]=n.word;
-
-
-        }
-        return toRet;
-    }
-
-    class Bucket {
-
-        private Node first;
-
-        public boolean get(String in) {         //return key true if key exists
-            Node next = first;
-            while (next != null) {
-                if (next.word.equals(in)) {
-                    return true;
-                }
-                next = next.next;
-            }
-            return false;
-        }
-
-        public void put(String key) {
-            for (Node curr = first; curr != null; curr = curr.next) {
-                if (key.equals(curr.word)) {
-                    return;                     //search hit: return
-                }
-            }
-            first = new Node(key, first); //search miss: add new node
-        }
-
-        class Node {
-
-            String word;
-            Node next;
-
-            public Node(String key, Node next) {
-                this.word = key;
-                this.next = next;
-            }
-
-        }
- 
     }
 }
