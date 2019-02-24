@@ -18,6 +18,7 @@ public class SpellCheck {
     private Dictionary dict;
     final static String filePath = "src/spell/corrector/SOURCES";
     final static char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+
     SpellCheck() {
         dict = new Dictionary();
         dict.build(filePath);
@@ -52,11 +53,11 @@ public class SpellCheck {
         }
         sb.append("perhaps you meant:\n");
         for (String s : print) {
-            sb.append("\n  -" + s);
-            dict.printSuggestion(s);
+            sb.append("\n  -" + s + " Edit Distance: " +dict.minDistance(input, s));
+
         }
         return sb.toString();
-        
+
     }
 
     private ArrayList<String> makeSuggestions(String input) {
@@ -67,7 +68,7 @@ public class SpellCheck {
         return toReturn;
     }
 
-    private ArrayList<String> charAppended(String input) { 
+    private ArrayList<String> charAppended(String input) {
         ArrayList<String> toReturn = new ArrayList<>();
         for (char c : alphabet) {
             String atFront = c + input;
@@ -82,7 +83,7 @@ public class SpellCheck {
         return toReturn;
     }
 
-    private ArrayList<String> charMissing(String input) {   
+    private ArrayList<String> charMissing(String input) {
         ArrayList<String> toReturn = new ArrayList<>();
 
         int len = input.length() - 1;
@@ -104,14 +105,14 @@ public class SpellCheck {
         return toReturn;
     }
 
-    private ArrayList<String> charsSwapped(String input) {   
+    private ArrayList<String> charsSwapped(String input) {
         ArrayList<String> toReturn = new ArrayList<>();
 
         for (int i = 0; i < input.length() - 1; i++) {
             String working = input.substring(0, i);
             working = working + input.charAt(i + 1);
             working = working + input.charAt(i);
-            working = working.concat(input.substring((i + 2))); 
+            working = working.concat(input.substring((i + 2)));
             if (dict.contains(working)) {
                 toReturn.add(working);
             }
